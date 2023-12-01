@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, SetMetadata } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
 import { SignupDto } from './dto/signup.dto';
@@ -8,12 +8,14 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('signin')
-  authenticate(@Body() authDto: AuthDto) {
-    return this.authService.authenticate(authDto);
+  @SetMetadata('IS_PUBLIC', true)
+  signin(@Body() authDto: AuthDto) {
+    return this.authService.signin(authDto);
   }
 
   @Post('signup')
-  create(@Body() signupDto: SignupDto) {
+  @SetMetadata('IS_PUBLIC', true)
+  signup(@Body() signupDto: SignupDto) {
     return this.authService.signup(signupDto);
   }
 }
